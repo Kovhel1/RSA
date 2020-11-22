@@ -1,1 +1,128 @@
+#RSA -  Rivest, Shamir and Aldeman
+#TODO:чтение из файл
 
+#генерация простых чисел
+def Resheto_Erastofena(max_number):
+    all_numbers_to_max = list()
+    for i in range(2, max_number):
+        all_numbers_to_max.append(i)
+    mass_len = max_number - 2
+    
+    for i in range(2, max_number):
+        for j  in range(0, mass_len):
+            if all_numbers_to_max[j] == i:
+                for l in range(j+1, mass_len):
+                    if all_numbers_to_max[l]%i == 0:
+                        all_numbers_to_max[l] = 1
+    
+    erasto_list = list()
+    for i in range(0, mass_len):
+        if all_numbers_to_max[i]!=1:
+            erasto_list.append(all_numbers_to_max[i])
+            mass_len-=1
+    
+    del all_numbers_to_max
+    return erasto_list
+    
+#кратность делителя    
+def kr (n, dell):
+    k = 1 
+    while n % (dell**k) == 0:
+        k += 1
+    k -= 1
+    return k
+
+#разложение числа на простые множители 
+#результат:[ [множитель1, множитель2...], [кратность1, кратность2...] ]
+def Multi(n):
+    mn = [] 
+    kratn = []
+    dell = 2
+    while dell <= n :
+        if n % dell == 0:
+            mn.append(dell)
+            
+            k = kr (n, dell) #кратность
+            kratn.append(k)
+            
+            n = n / (dell**k)
+            
+        dell += 1
+
+    result = [mn, kratn]
+    return result
+
+# узнаем, являются ли числа списка spisok_chisel взаимнопростыми
+# результат: если 1 - взаимнопростые, если 0 - имеют общие простые множители
+def prost(spisok_chisel):
+    
+    common = list() 
+    
+    for number in spisok_chisel:
+        common.extend(Multi(number)[0])
+        
+    for i in common:
+        if common.count(i) >= 2:
+            return 0
+    return 1
+
+
+def endecription(endecripted_message, n, e_or_d):
+    return (endecripted_message**e_or_d)%n
+    
+
+def main():
+
+#Шаг 1. ПОДГОТОВКА КЛЮЧЕЙ
+
+#TODO:ГЕНЕРАЦИЯ ПРОСТОЫХ ЧИСЕЛ
+    #Выбираю два простых числа.
+    p = 3 #3
+    q = 7 #7
+    
+    #Вычисляем модуль — произведение наших p и q
+    n = p*q #21
+    
+    #Вычисляем функцию Эйлера
+    f = (p-1)*(q-1) #12
+    
+    #Выбираем число e
+    izi_chisla_do_f = Resheto_Erastofena(f)
+    #пройдемся по списку  и первое взаимнопростое возьмем за е
+    for i in range(0, f):
+        spisok_chisel = [f, i]
+        if prost(spisok_chisel) == 0:
+            e = izi_chisla_do_f[i]  #5
+            break
+
+
+    #Теперь пара чисел {e, n} — это мой открытый ключ. 
+    #Я отправляю его вам, чтобы вы зашифровали своё сообщение. 
+    
+    #закрытый ключ.
+#TODO: решить (d×е)%φ=1
+    #решить (d×е)%φ=1
+    #d = 1
+    d = 6
+    while ((e*d)%f != 1):
+        d+=1
+    #Пара {d, n} — это секретный ключ, его я оставляю у себя. 
+    #Его нельзя сообщать никому. 
+    #Только обладатель секретного ключа может расшифровать то, что было зашифровано открытым ключом.
+
+
+
+    #Шаг 2. ШИФРОВАНИЕ
+    #Здесь надо заметить, что сообщение не должно быть больше n=21. иначе ничего не получится.
+    message=19
+    
+    endecripted_message = endecription(message, n, e)
+    #Полученные данные E=10, вы отправляете мне.    
+    print("endecripted_message = ", endecripted_message)
+
+    #Шаг 3. РАСШИФРОВКА
+    #вместо e использую d.
+    decripted_message = endecription(message, n, e)
+    print("decripted_message = ", decripted_message)
+
+main()
