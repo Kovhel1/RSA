@@ -1,0 +1,34 @@
+Number = int(input("Number = "))
+
+#кратность делителя    
+def kr (n, dell):
+    k = 1 
+    while n % (dell**k) == 0:
+        k += 1
+    k -= 1
+    return k
+
+#разложение числа на простые множители 
+#результат:[ [множитель1, множитель2...], [кратность1, кратность2...] ]
+def Multi(n):
+    mn = [] 
+    kratn = []
+    dell = 2
+    while dell <= n :
+        if n % dell == 0:
+            mn.append(dell)
+            
+            k = kr (n, dell) #кратность
+            kratn.append(k)
+            
+            n = n / (dell**k)
+            
+        dell += 1
+
+    result = [mn, kratn]
+    return result
+
+n = Number
+
+print(Multi(n))
+print("множители числа ", n, " = ", Multi(n)[0])
