@@ -1,0 +1,47 @@
+#кратность делителя    
+def kr (n, dell):
+    k = 1 
+    while n % (dell**k) == 0:
+        k += 1
+    k -= 1
+    return k
+
+#разложение числа на простые множители 
+#результат:[ [множитель1, множитель2...], [кратность1, кратность2...] ]
+def Multi(n):
+    mn = [] 
+    kratn = []
+    dell = 2
+    while dell <= n :
+        if n % dell == 0:
+            mn.append(dell)
+            
+            k = kr (n, dell) #кратность
+            kratn.append(k)
+            
+            n = n / (dell**k)
+            
+        dell += 1
+
+    result = [mn, kratn]
+    return result
+
+# узнаем, являются ли числа списка spisok_chisel взаимнопростыми
+# числа взаимнопростые, если у них нет общих множителей в разложении
+    # идея в том, чтобы добавить все множители в массив commo[] и, 
+    # если один из них входит больше одного раза, то числа не взаимнопросты
+    # Результат: если 1 - взаимнопростые, если 0 - имеют общие простые множители
+def prost(spisok_chisel):
+    
+    common = list() 
+    
+    for number in spisok_chisel:
+        common.extend(Multi(number)[0])
+        
+    for i in common:
+        if common.count(i) >= 2:
+            return 0
+    return 1
+
+spisok_chisel = [2, 5]
+print(prost(spisok_chisel))
