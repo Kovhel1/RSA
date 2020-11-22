@@ -2,14 +2,14 @@
 
 import random
 
-#генерация простых чисел, немного измененная
-def Resheto_Erastofena(min_number, max_number):
+#генерация простых чисел
+def Resheto_Erastofena(max_number):
     all_numbers_to_max = list()
     for i in range(2, max_number):
         all_numbers_to_max.append(i)
     mass_len = max_number - 2
     
-    for i in range(min_number, max_number):
+    for i in range(2, max_number):
         for j  in range(0, mass_len):
             if all_numbers_to_max[j] == i:
                 for l in range(j+1, mass_len):
@@ -79,18 +79,18 @@ def main():
     #Выбираю два простых числа.
     # n должно соответствовать алфавиту т.к. сообщение не должно быть больше n, 
     #поэтому min_n = корень(максимальное число алфавита)
-    min_n = 2
-    max_n = 50
-    resheto_list = Resheto_Erastofena(min_n, max_n)
-    p = random.choice(resheto_list)
-    q = random.choice(resheto_list)
-    n = p*q 
+    min_q = 23
+    max_p = 29
+    
+    n = max_p*min_q
+    print("соощение не должно быть больше n = ", n)
+    print("иначе смените min_q!")
     
     #Вычисляем функцию Эйлера
-    f = (p-1)*(q-1) 
+    f = (min_q-1)*(max_p-1) 
     
     #Выбираем число e
-    izi_chisla_do_f = Resheto_Erastofena(2, f)
+    izi_chisla_do_f = Resheto_Erastofena(f)
     #пройдемся по списку  и первое взаимнопростое возьмем за е
     for i in range(0, f):
         spisok_chisel = [f, i]
@@ -100,21 +100,21 @@ def main():
 
 
 #ЗАКРЫТЫЙ КЛЮЧ {d, n}
-#TODO: решить (d×е)%φ=1
-    d = 1 
+    d = 1
     while ((e*d)%f != 1):
         d+=1
     
-#СООБЩЕНИЕ    
-    message=19
+#СООБЩЕНИЕ 
+    #Здесь важно напомнить, что сообщение не должно быть больше n=21. иначе ничего не получится.
+    message = 25
     print("message = ", message)
     
 #ШИФРОВАНИЕ
-    endecripted_message = endecription(message, n, e)
-    print("endecripted_message = ", endecripted_message)
+    encripted_message = endecription(message, n, e)
+    print("encripted_message = ", encripted_message)
     
 #РАСШИФРОВКА
-    decripted_message = endecription(endecripted_message, n, d)
+    decripted_message = endecription(encripted_message, n, d)
     print("decripted_message = ", decripted_message)
 
 main()
