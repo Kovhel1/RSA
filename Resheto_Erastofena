@@ -1,0 +1,20 @@
+f = int(input("f = "))
+
+all_numbers_to_f = list()
+for i in range(2, f):
+    all_numbers_to_f.append(i)
+print("all_numbers_to_f = ", all_numbers_to_f)
+mass_len = f - 2
+
+for i in range(2, f):
+    for j  in range(0, mass_len):
+        if all_numbers_to_f[j] == i:
+            for l in range(j+1, mass_len):
+                if all_numbers_to_f[l]%i == 0:
+                    all_numbers_to_f[l] = 1
+erasto_list = list()
+for i in range(0, mass_len):
+    if all_numbers_to_f[i]!=1:
+        erasto_list.append(all_numbers_to_f[i])
+        mass_len-=1
+print("erasto_list ", erasto_list)
